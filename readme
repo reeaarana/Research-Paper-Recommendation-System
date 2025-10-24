@@ -15,7 +15,3 @@ This project was developed and tested on **Google Colab**, using the arXiv datas
 - 🔍 Semantic Understanding – Goes beyond keyword matching to understand contextual meaning.  
 - 🧠 Sentence-BERT Embeddings – Provides deep semantic representations for ranking related papers.  
 - 📊 Scalable Design – Can handle tens of thousands of papers efficiently in Colab.
-
-🧩 System Architecture
-
-
