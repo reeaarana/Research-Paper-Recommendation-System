@@ -1,1 +1,225 @@
-readme
+Here’s a **professional and detailed `README.md` file** for your project — perfect for GitHub or any research submission repository.
+It’s clear, well-formatted in Markdown, and highlights both the **technical flow** and **research motivation**.
+
+---
+
+````markdown
+# 🧠 NLP-Based Research Paper Recommendation System
+
+## 📘 Overview
+
+The **NLP Research Paper Recommendation System** is a hybrid AI-based application that helps researchers automatically find **semantically similar academic papers** based on the content of a given research PDF.  
+It uses **Natural Language Processing (NLP)**, **Latent Semantic Analysis (LSA)**, and **Sentence-BERT embeddings** to provide context-aware and accurate recommendations.
+
+This project was developed and tested on **Google Colab**, using the **arXiv dataset** from **Cornell University (via KaggleHub)**.
+
+---
+
+## 🚀 Features
+
+- 📂 **PDF Upload Support** – Automatically extracts text from research paper PDFs using PyMuPDF.  
+- 🧮 **Hybrid Recommendation Pipeline** – Combines statistical (SVD) and deep learning (Sentence-BERT) methods.  
+- ⚡ **FAISS Similarity Search** – Enables fast and efficient similarity computation for large datasets.  
+- 🔍 **Semantic Understanding** – Goes beyond keyword matching to understand contextual meaning.  
+- 🧠 **Sentence-BERT Embeddings** – Provides deep semantic representations for ranking related papers.  
+- 📊 **Scalable Design** – Can handle tens of thousands of papers efficiently in Colab.
+
+---
+
+## 🧩 System Architecture
+
+```text
+          ┌────────────────────┐
+          │  Input Research PDF │
+          └─────────┬──────────┘
+                    ↓
+        ┌────────────────────────┐
+        │   PDF Text Extraction   │
+        └─────────┬──────────────┘
+                    ↓
+        ┌────────────────────────┐
+        │  TF-IDF + SVD Shortlist│
+        └─────────┬──────────────┘
+                    ↓
+        ┌────────────────────────┐
+        │ Sentence-BERT Embedding │
+        └─────────┬──────────────┘
+                    ↓
+        ┌────────────────────────┐
+        │  FAISS Similarity Index │
+        └─────────┬──────────────┘
+                    ↓
+        ┌────────────────────────┐
+        │  Top-N Paper Results   │
+        └────────────────────────┘
+````
+
+---
+
+## 🧠 Methodology
+
+### 1. **Dataset Loading**
+
+* The project uses the **arXiv Metadata Dataset** from Kaggle.
+* Loaded and processed via `kagglehub`.
+
+### 2. **Preprocessing**
+
+* Combined the `title` and `abstract` fields into a single text corpus.
+* Removed stop words and tokenized for TF-IDF analysis.
+
+### 3. **Phase 1 – SVD/LSA Shortlisting**
+
+* Text converted to TF-IDF vectors (`max_features=10000`).
+* Dimensionality reduced to 100 using **Truncated SVD**.
+* Cosine similarity used to shortlist top 100 papers.
+
+### 4. **Phase 2 – Sentence-BERT Reranking**
+
+* Used the model `all-MiniLM-L6-v2` for generating embeddings (384 dimensions).
+* Applied **FAISS (Facebook AI Similarity Search)** for efficient inner-product ranking.
+* Final results reranked and top-10 similar papers displayed.
+
+### 5. **PDF Text Extraction**
+
+* Implemented using **PyMuPDF (fitz)**.
+* Extracts full text from uploaded research PDFs for input processing.
+
+---
+
+## 🧰 Technologies Used
+
+| Category          | Tools / Libraries                                                                               |
+| ----------------- | ----------------------------------------------------------------------------------------------- |
+| **Language**      | Python 3.12                                                                                     |
+| **NLP Models**    | Sentence-BERT (`all-MiniLM-L6-v2`)                                                              |
+| **Libraries**     | scikit-learn, pandas, numpy, faiss-cpu, PyMuPDF                                                 |
+| **Platform**      | Google Colab                                                                                    |
+| **Dataset**       | [arXiv Metadata (Cornell University)](https://www.kaggle.com/datasets/Cornell-University/arxiv) |
+| **Vector Search** | FAISS                                                                                           |
+
+---
+
+## ⚙️ Installation and Setup
+
+### 1️⃣ Clone the Repository
+
+```bash
+git clone https://github.com/yourusername/nlp-research-paper-recommender.git
+cd nlp-research-paper-recommender
+```
+
+### 2️⃣ Install Dependencies
+
+```bash
+pip install kagglehub pymupdf sentence-transformers scikit-learn pandas faiss-cpu
+```
+
+### 3️⃣ Run on Google Colab
+
+You can upload the provided notebook:
+
+```
+nlp-rs-project.ipynb
+```
+
+and execute all cells sequentially.
+
+### 4️⃣ Upload Your PDF
+
+Once prompted:
+
+```
+⬆ Please upload a research paper PDF...
+```
+
+Upload your research paper (e.g., `sample_paper.pdf`).
+
+---
+
+## 📊 Example Output
+
+```
+📄 Top 10 Recommended Papers (Hybrid: SVD shortlist + Embedding rerank):
+
+1. 🔹 Title: Calculation of prompt diphoton production cross sections
+   Score: 0.9412
+   Abstract: A fully differential calculation in perturbative QCD...
+
+2. 🔹 Title: Sparsity-certifying Graph Decompositions
+   Score: 0.9105
+   Abstract: We describe a new algorithm for (k,l)-sparsity...
+```
+
+---
+
+## 🧭 Project Workflow Diagram (Overleaf/TikZ Compatible)
+
+If you’re using Overleaf for documentation, include this TikZ diagram:
+
+```latex
+\begin{tikzpicture}[node distance=10mm]
+\node[draw, rounded corners, fill=violet!10] (a) {Input Research PDF};
+\node[draw, rounded corners, fill=violet!10, below=of a] (b) {PDF Text Extraction};
+\node[draw, rounded corners, fill=violet!10, below=of b] (c) {TF-IDF + SVD Shortlist};
+\node[draw, rounded corners, fill=violet!10, below=of c] (d) {Sentence-BERT Embedding};
+\node[draw, rounded corners, fill=violet!10, below=of d] (e) {FAISS Similarity Index};
+\node[draw, rounded corners, fill=violet!10, below=of e] (f) {Top-N Paper Results};
+\draw[-latex] (a)--(b);
+\draw[-latex] (b)--(c);
+\draw[-latex] (c)--(d);
+\draw[-latex] (d)--(e);
+\draw[-latex] (e)--(f);
+\end{tikzpicture}
+```
+
+---
+
+## 📈 Results Summary
+
+| Metric                   | Description                  | Value  |
+| ------------------------ | ---------------------------- | ------ |
+| Dataset Size             | Number of papers used        | 50,001 |
+| Embedding Dim.           | Sentence-BERT Output Size    | 384    |
+| SVD Components           | LSA Reduced Dimension        | 100    |
+| Retrieval Type           | Hybrid (SVD + FAISS)         | ✅      |
+| R² Score (Pipeline Test) | Linear Regression Validation | 0.9796 |
+
+---
+
+## 📚 Future Work
+
+* Add citation network–based recommendation.
+* Integrate author and keyword similarity.
+* Deploy as a web application (Streamlit or FastAPI).
+* Include multilingual paper support using multilingual BERT.
+* Introduce user profiling for personalized recommendations.
+
+---
+
+## 👩‍💻 Author
+
+**Ruchika [Your Last Name]**
+📧 Email: [[your.email@example.com](mailto:your.email@example.com)]
+🎓 Department of [Your Department Name]
+🏫 [Your University / Institution Name]
+
+---
+
+## 🏁 License
+
+This project is released under the **MIT License**.
+You are free to use, modify, and distribute the code with proper citation.
+
+---
+
+### ⭐ If you found this useful, consider giving it a star on GitHub!
+
+```
+
+---
+
+Would you like me to make this **README interactive for GitHub** (with badges, Colab launch button, and dataset links)?  
+I can add those visual badges and a “Run in Colab” button for a more professional look.
+```
+
