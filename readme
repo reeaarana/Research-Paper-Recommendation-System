@@ -1,48 +1,21 @@
-# 🧠 NLP-Based Research Paper Recommendation System
+NLP-Based Research Paper Recommendation System
 
-## 📘 Overview
+📘 Overview
 
-The **NLP Research Paper Recommendation System** is a hybrid AI-based application that helps researchers automatically find **semantically similar academic papers** based on the content of a given research PDF.  
-It uses **Natural Language Processing (NLP)**, **Latent Semantic Analysis (LSA)**, and **Sentence-BERT embeddings** to provide context-aware and accurate recommendations.
+The NLP Research Paper Recommendation System is a hybrid AI-based application that helps researchers automatically find semantically similar academic papers based on the content of a given research PDF.  
+It uses Natural Language Processing (NLP), Latent Semantic Analysis (LSA), and Sentence-BERT embeddings to provide context-aware and accurate recommendations.
 
-This project was developed and tested on **Google Colab**, using the **arXiv dataset** from **Cornell University (via KaggleHub)**.
+This project was developed and tested on **Google Colab**, using the arXiv dataset from Cornell University (via KaggleHub).
 
----
+🚀 Features
 
-## 🚀 Features
+- 📂 PDF Upload Support – Automatically extracts text from research paper PDFs using PyMuPDF.  
+- 🧮 Hybrid Recommendation Pipeline – Combines statistical (SVD) and deep learning (Sentence-BERT) methods.  
+- ⚡ FAISS Similarity Search – Enables fast and efficient similarity computation for large datasets.  
+- 🔍 Semantic Understanding – Goes beyond keyword matching to understand contextual meaning.  
+- 🧠 Sentence-BERT Embeddings – Provides deep semantic representations for ranking related papers.  
+- 📊 Scalable Design – Can handle tens of thousands of papers efficiently in Colab.
 
-- 📂 **PDF Upload Support** – Automatically extracts text from research paper PDFs using PyMuPDF.  
-- 🧮 **Hybrid Recommendation Pipeline** – Combines statistical (SVD) and deep learning (Sentence-BERT) methods.  
-- ⚡ **FAISS Similarity Search** – Enables fast and efficient similarity computation for large datasets.  
-- 🔍 **Semantic Understanding** – Goes beyond keyword matching to understand contextual meaning.  
-- 🧠 **Sentence-BERT Embeddings** – Provides deep semantic representations for ranking related papers.  
-- 📊 **Scalable Design** – Can handle tens of thousands of papers efficiently in Colab.
+🧩 System Architecture
 
----
 
-## 🧩 System Architecture
-
-```text
-          ┌────────────────────┐
-          │  Input Research PDF │
-          └─────────┬──────────┘
-                    ↓
-        ┌────────────────────────┐
-        │   PDF Text Extraction   │
-        └─────────┬──────────────┘
-                    ↓
-        ┌────────────────────────┐
-        │  TF-IDF + SVD Shortlist│
-        └─────────┬──────────────┘
-                    ↓
-        ┌────────────────────────┐
-        │ Sentence-BERT Embedding │
-        └─────────┬──────────────┘
-                    ↓
-        ┌────────────────────────┐
-        │  FAISS Similarity Index │
-        └─────────┬──────────────┘
-                    ↓
-        ┌────────────────────────┐
-        │  Top-N Paper Results   │
-        └────────────────────────┘
