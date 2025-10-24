@@ -1,7 +1,3 @@
-Here’s a **professional and detailed `README.md` file** for your project — perfect for GitHub or any research submission repository.
-It’s clear, well-formatted in Markdown, and highlights both the **technical flow** and **research motivation**.
-
----
 
 ````markdown
 # 🧠 NLP-Based Research Paper Recommendation System
@@ -197,29 +193,5 @@ If you’re using Overleaf for documentation, include this TikZ diagram:
 
 ---
 
-## 👩‍💻 Author
 
-**Ruchika [Your Last Name]**
-📧 Email: [[your.email@example.com](mailto:your.email@example.com)]
-🎓 Department of [Your Department Name]
-🏫 [Your University / Institution Name]
-
----
-
-## 🏁 License
-
-This project is released under the **MIT License**.
-You are free to use, modify, and distribute the code with proper citation.
-
----
-
-### ⭐ If you found this useful, consider giving it a star on GitHub!
-
-```
-
----
-
-Would you like me to make this **README interactive for GitHub** (with badges, Colab launch button, and dataset links)?  
-I can add those visual badges and a “Run in Colab” button for a more professional look.
-```
 
