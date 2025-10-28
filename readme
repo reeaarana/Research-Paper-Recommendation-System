@@ -1,17 +1,200 @@
-NLP-Based Research Paper Recommendation System
+=====================================================================
+NLP RESEARCH PAPER RECOMMENDATION SYSTEM
+=====================================================================
 
-📘 Overview
+PROJECT OVERVIEW
+---------------------------------------------------------------------
+This project is a Hybrid Research Paper Recommender System designed 
+to suggest relevant academic papers based on the abstract of a given 
+research paper (PDF uploaded by the user). 
 
-The NLP Research Paper Recommendation System is a hybrid AI-based application that helps researchers automatically find semantically similar academic papers based on the content of a given research PDF.  
-It uses Natural Language Processing (NLP), Latent Semantic Analysis (LSA), and Sentence-BERT embeddings to provide context-aware and accurate recommendations.
+It uses a combination of:
+  1. Statistical similarity (TF-IDF + SVD)
+  2. Semantic similarity (Sentence Transformer embeddings + FAISS)
 
-This project was developed and tested on **Google Colab**, using the arXiv dataset from Cornell University (via KaggleHub).
+The system extracts the abstract text from a user-uploaded paper,
+finds the most similar papers from the ArXiv dataset, ranks them,
+and outputs the top recommendations with titles, abstracts, and
+similarity scores.
 
-🚀 Features
+---------------------------------------------------------------------
+SYSTEM ARCHITECTURE
+---------------------------------------------------------------------
 
-- 📂 PDF Upload Support – Automatically extracts text from research paper PDFs using PyMuPDF.  
-- 🧮 Hybrid Recommendation Pipeline – Combines statistical (SVD) and deep learning (Sentence-BERT) methods.  
-- ⚡ FAISS Similarity Search – Enables fast and efficient similarity computation for large datasets.  
-- 🔍 Semantic Understanding – Goes beyond keyword matching to understand contextual meaning.  
-- 🧠 Sentence-BERT Embeddings – Provides deep semantic representations for ranking related papers.  
-- 📊 Scalable Design – Can handle tens of thousands of papers efficiently in Colab.
+1. DATA SOURCE:
+   - ArXiv Metadata OAI Snapshot (Cornell University)
+   - Downloaded via Kaggle using kagglehub
+   - File: arxiv-metadata-oai-snapshot.json (~1.5 GB)
+
+2. DATA PREPARATION:
+   - Only the "title" and "abstract" fields are used.
+   - Abstracts are cleaned to remove LaTeX formulas, references,
+     URLs, and extra whitespace.
+   - Each record is stored as:
+       { "title": "...", "abstract": "...", "text": "..." }
+
+3. COARSE SIMILARITY (FAST FILTERING):
+   - Method: TF-IDF + Truncated SVD (Latent Semantic Analysis)
+   - Converts each abstract into a topic-based numerical vector.
+   - Measures cosine similarity between the input abstract and
+     all dataset abstracts.
+   - Selects top 'shortlist_k' candidates (e.g., 1000).
+
+4. FINE SIMILARITY (SEMANTIC RERANKING):
+   - Method: SentenceTransformer model ("all-mpnet-base-v2")
+   - Embeds each abstract into a 768-dimensional dense vector.
+   - FAISS (Facebook AI Similarity Search) is used to perform
+     high-speed nearest neighbor search.
+   - Uses HNSW index for high recall and efficiency.
+   - Computes cosine similarity (via inner product on normalized vectors).
+   - Reranks shortlisted papers to produce final top-K recommendations.
+
+5. PDF ABSTRACT EXTRACTION:
+   - Library: PyMuPDF (fitz)
+   - Locates the "Abstract" section in the uploaded PDF.
+   - Extracts text until the "Introduction" or similar heading.
+   - Cleans the extracted text for use as a query.
+
+6. OUTPUT:
+   - Top-K ranked recommendations printed in the notebook.
+   - Saved as CSV file: /content/recommendations.csv
+   - Each row includes:
+       Rank, Title, Abstract, Similarity Score
+
+---------------------------------------------------------------------
+WORKFLOW SUMMARY
+---------------------------------------------------------------------
+
+1. Download dataset from Kaggle via kagglehub.
+2. Load and clean dataset (abstracts only).
+3. Build TF-IDF + SVD models for coarse filtering.
+4. Encode all abstracts using SentenceTransformer.
+5. Create FAISS index (HNSWFlat) for fast retrieval.
+6. Upload or select PDF paper.
+7. Extract abstract from the PDF.
+8. Perform two-stage similarity search:
+      a. Coarse filtering (TF-IDF + SVD)
+      b. Fine reranking (Transformer + FAISS)
+9. Display and save top recommendations.
+
+---------------------------------------------------------------------
+KEY TECHNOLOGIES AND LIBRARIES
+---------------------------------------------------------------------
+
+- Python 3
+- Pandas, NumPy, Scikit-learn
+- PyMuPDF (fitz) for PDF text extraction
+- Sentence-Transformers (all-mpnet-base-v2)
+- FAISS (Facebook AI Similarity Search)
+- KaggleHub (for dataset download)
+- TQDM (for progress tracking)
+
+---------------------------------------------------------------------
+WHY HYBRID APPROACH?
+---------------------------------------------------------------------
+
+TF-IDF + SVD (Latent Semantic Analysis):
+   - Fast and scalable.
+   - Captures topic-level similarity based on word patterns.
+   - Used for "coarse similarity" to shortlist relevant papers.
+
+Transformer Embeddings (MPNet) + FAISS:
+   - Deep semantic understanding of text.
+   - Captures context, synonyms, and meaning beyond keywords.
+   - Used for "fine similarity" to precisely rank candidates.
+
+Combining both ensures:
+   - High recall (coarse stage) + high precision (fine stage)
+   - Efficient computation even with millions of abstracts.
+
+---------------------------------------------------------------------
+MATH BACKGROUND (SUMMARY)
+---------------------------------------------------------------------
+
+1. TF-IDF:
+   TFIDF(i, j) = TF(i, j) * log(N / DF(j))
+   Converts text into weighted term-frequency vectors.
+
+2. SVD (Latent Semantic Analysis):
+   X ≈ U_k Σ_k V_k^T
+   Reduces dimensionality to capture latent topics.
+
+3. Cosine Similarity:
+   sim(A, B) = (A · B) / (||A|| * ||B||)
+   Measures angular similarity between two vectors.
+
+4. Embeddings:
+   SentenceTransformer encodes text into dense semantic vectors
+   trained on large textual corpora.
+
+5. FAISS HNSW Index:
+   Efficiently finds top nearest neighbors among millions of vectors.
+
+---------------------------------------------------------------------
+EXAMPLE USAGE
+---------------------------------------------------------------------
+
+- Upload a paper PDF (e.g., your own research or any ArXiv paper)
+- The program automatically extracts its abstract.
+- It computes similarities and outputs top 10 related papers.
+- Results are shown in the notebook and saved to CSV.
+
+---------------------------------------------------------------------
+OUTPUT EXAMPLE
+---------------------------------------------------------------------
+
+Rank  Title                                     Score
+--------------------------------------------------------
+1     Deep Learning Approaches for NLP          0.9284
+2     Contextual Word Embeddings in Sentiment   0.9143
+3     Transformer Models for Text Classification 0.9107
+...
+Saved recommendations to /content/recommendations.csv
+
+---------------------------------------------------------------------
+PROJECT SIGNIFICANCE
+---------------------------------------------------------------------
+
+- Helps researchers quickly discover related works.
+- Reduces manual search time on platforms like ArXiv or IEEE.
+- Demonstrates practical NLP applications using modern
+  embedding and similarity search technologies.
+- Combines interpretability (TF-IDF) with semantic depth (MPNet).
+
+---------------------------------------------------------------------
+VIVA SUMMARY (1-MINUTE EXPLANATION)
+---------------------------------------------------------------------
+
+This project is a Hybrid Research Paper Recommender System that
+takes a user's research paper (PDF), extracts its abstract, and
+finds top similar papers from the ArXiv dataset.
+
+We use TF-IDF + SVD for fast topic-level filtering (coarse similarity)
+and SentenceTransformer embeddings with FAISS for fine-grained semantic
+similarity. This hybrid method ensures both efficiency and accuracy.
+
+Output includes a ranked list of recommended papers with similarity scores.
+
+---------------------------------------------------------------------
+AUTHOR / TEAM
+---------------------------------------------------------------------
+Developed by: [Your Name]
+Institution: [Your College / University]
+Course: [NLP / Machine Learning Project]
+Date: [Month, Year]
+
+---------------------------------------------------------------------
+FILE STRUCTURE
+---------------------------------------------------------------------
+
+/content/
+    ├── arxiv-metadata-oai-snapshot.json
+    ├── embeddings_abstracts.npy
+    ├── faiss_abstracts_hnsw.idx
+    ├── recommendations.csv
+    ├── uploaded_paper.pdf
+    ├── nlp-rs-project.ipynb
+
+=====================================================================
+END OF FILE
+=====================================================================
